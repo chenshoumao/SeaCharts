@@ -9,9 +9,9 @@ public final class AppGISContextHolder {
 		return gisProcesser;
 	}
 	
-	public static void init(String gmapdir, String seachart) {
+	public static void init(String mapdir) {
 		gisProcesser = new GisProcessor();
-		gisProcesser.init(gmapdir, seachart);
+		gisProcesser.init(mapdir);
 	}
 	
 }
