@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.ResourceBundle;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -79,8 +80,16 @@ public class CommitData extends HttpServlet {
 			Map<String, Object> params = new HashMap<String, Object>();
 			//封装参数
 			params.put("json",mapper.writeValueAsString(map));
+			
+			
+			
+			
+			//获取接口文件
+			ResourceBundle bundle = ResourceBundle.getBundle("config/interface");
+			
 			//访问地址
-			String url = "http://localhost:8081/Test/Test1";
+			String url = bundle.getString("url");
+			System.out.println(url);
 			//访问接口，并且把结果存在 postResult参数当中
 			String postResult = PostMethod.httpClientPost(url, params, "utf-8");
 			System.out.println(postResult);
