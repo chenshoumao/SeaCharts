@@ -15,23 +15,23 @@ var orderstatus;
 /**
  * 航线选海图时触发
  */
-function onRouteCoverage(route, chartlist) {
+function onRouteCoverage(route, chartinfo) {
 	if (route == undefined)
 		route = iroute;
 	else
 		iroute = route;
-	showChartlist({title: "航线所经海图", id: "route"}, chartlist);
+	showChartlist({title: "航线所经海图", id: "route"}, chartinfo);
 }
 
-function showChartlist(dlginfo, list) {
+function showChartlist(dlginfo, chartinfo) {
 	
 	$("table tr:eq(0)").siblings().remove();
 	
 	
-		if (list == undefined)
-			list = chartlist;
+		if (chartinfo == undefined)
+			chartinfo = chartlist;
 		else
-			chartlist = list;
+			chartlist = chartinfo;
 		
 		// alert("selectType " + selectType);
 		if (selectType == 'ARCS') {
@@ -47,7 +47,7 @@ function showChartlist(dlginfo, list) {
 		var index = 1;
 		$
 				.each(
-						chartlist,
+						chartlist.charts,
 						function(i, c) {// console.log(c.chartType);
 							 
 								table += "<tr>";
@@ -91,7 +91,11 @@ function showChartlist(dlginfo, list) {
 		 $("#dialog").show();
 		 $("#charts").show();
 		 $("#period").show();
-		 
+		var head = ""; 
+		if(chartinfo.meta) {
+			$('#head').empty();
+			$('#head').append('当前海图库 - 文件编号：' + chartinfo.meta.MD_FileId + "，更新时间：" + chartinfo.meta.MD_DateStamp);
+		} 
 		 $("#charts").append(table);
 		if (dialogOpts1 == undefined) {
 			dialogOpts1 = {
