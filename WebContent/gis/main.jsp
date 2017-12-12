@@ -156,20 +156,25 @@ $(function(){
 	//!!
 	//!! 注，函数的例子见上
 	//!!
-	function changePeriod(a) {
-		var length = $("tr").length;
-		period = $(a).val() / 3 - 1;
-		for (var i = 1; i < length; i++) {
-			//var oo = $("tr").eq(i).find("select").find("option:selected").text();
-			// console.log(oo);
-			//$('#gg option:eq(3)').attr('selected','selected');
-			var temp = $("tr").eq(i).children().find(
-					'select option:eq(' + period + ')');
-			temp.attr('selected', 'selected');
-			temp.siblings().attr('selected', false);
-			//$("#content").children().eq(i).children().find("td").find("select").find("option[text='"+text+"']").attr("selected",true);
-		}
-	}
+	function changePeriod(a){
+	 var length = $("tr").length;
+	 period = $(a).val() / 3 - 1;
+	 for(var i = 1;i < length;i++){
+		 //var oo = $("tr").eq(i).find("select").find("option:selected").text();
+		// console.log(oo);
+		 //$('#gg option:eq(3)').attr('selected','selected');
+		 var temp =  $("tr").eq(i).children().find('select option:eq(' + period + ')');
+		 temp.attr('selected','selected');
+		 temp.siblings().attr('selected',false);
+		 //$("#content").children().eq(i).children().find("td").find("select").find("option[text='"+text+"']").attr("selected",true);
+		for(var j = 0; j < $("tr").eq(i).find('.price').length;j++){
+			 if(j == period)
+				 $("tr").eq(i).find('.price'+period).show();
+			 else
+				 $("tr").eq(i).find('.price'+j).hide();
+		 }
+	 } 
+}
 </script>
 
 <div id="dialog" style="display: none;">

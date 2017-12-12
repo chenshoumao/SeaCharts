@@ -89,6 +89,7 @@ addToolbarButton("接口配置", "<img src='images/find.png'>", function() {
 //!!
 //!! 注，函数的例子见上
 //!!
+
 function changePeriod(a){
 	 var length = $("tr").length;
 	 period = $(a).val() / 3 - 1;
@@ -100,7 +101,7 @@ function changePeriod(a){
 		 temp.attr('selected','selected');
 		 temp.siblings().attr('selected',false);
 		 //$("#content").children().eq(i).children().find("td").find("select").find("option[text='"+text+"']").attr("selected",true);
-		 for(var j = 0; j < 4;j++){
+		for(var j = 0; j < $("tr").eq(i).find('.price').length;j++){
 			 if(j == period)
 				 $("tr").eq(i).find('.price'+period).show();
 			 else

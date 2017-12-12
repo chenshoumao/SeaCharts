@@ -1,6 +1,10 @@
 package com.solar.servlet;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -51,7 +55,8 @@ public class CommitData extends HttpServlet {
 		String data = request.getParameter("data");
 		String linename = request.getParameter("linename");
 		String line = request.getParameter("line");
-		
+		FileInputStream fis = null;
+		InputStreamReader reader = null;
 		ObjectMapper mapper = new ObjectMapper(); 
 		Map<String, Object> map = new HashMap<String,Object>(); 
 		Map<String, Object> result = new HashMap<String,Object>(); 
@@ -85,10 +90,15 @@ public class CommitData extends HttpServlet {
 			
 			
 			//获取接口文件
-			ResourceBundle bundle = ResourceBundle.getBundle("config/interface");
+			String path = InterfaceServlet.class.getClassLoader().getResource("config/config.json").getPath();
+			InputStream in = InterfaceServlet.class.getClassLoader().getSystemClassLoader().getResourceAsStream(path);
+			fis = new FileInputStream(new File(path));
+			reader = new InputStreamReader(fis, "utf-8");
+			Map<String, Object> configMap = mapper.readValue(reader, HashMap.class);
 			
 			//访问地址
-			String url = bundle.getString("url");
+			String url = configMap.get("prefix").toString() + configMap.get("ip").toString() + ":" + 
+					configMap.get("port").toString() + configMap.get("suffix").toString();
 			System.out.println(url);
 			//访问接口，并且把结果存在 postResult参数当中
 			String postResult = PostMethod.httpClientPost(url, params, "utf-8");

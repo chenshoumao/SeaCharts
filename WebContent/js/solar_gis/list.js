@@ -10,8 +10,6 @@ var period = 0;
 var selectType = 'AVCS Units Coastal';
 var orderstatus;
 
-
-
 /**
  * 航线选海图时触发
  */
@@ -20,112 +18,122 @@ function onRouteCoverage(route, chartinfo) {
 		route = iroute;
 	else
 		iroute = route;
-	showChartlist({title: "航线所经海图", id: "route"}, chartinfo);
+	showChartlist({
+		title : "航线所经海图",
+		id : "route"
+	}, chartinfo);
 }
 
 function showChartlist(dlginfo, chartinfo) {
-	
+
 	$("table tr:eq(0)").siblings().remove();
-	
-	
-		if (chartinfo == undefined)
-			chartinfo = chartlist;
-		else
-			chartlist = chartinfo;
-		
-		// alert("selectType " + selectType);
-		if (selectType == 'ARCS') {
-			$('#type').find('option:eq("1")').attr('selected', 'selected');
-			$('#type').attr('disabled', 'disabled');
-			$('#head_number').show();
-		} else {
-			$('#type').attr('disabled', 'disabled');
-			$('#head_number').hide();
-		}
-		var table = "";
-		console.log(chartlist);
-		var index = 1;
-		$
-				.each(
-						chartlist.charts,
-						function(i, c) {// console.log(c.chartType);
-							 
-								table += "<tr>";
-								table += "<td style='text-align: center;'>"
-										+ index++ + "</td>";
-								table += "<td style='text-align: center;' class='"
-										+ c.chartType
-										+ "'>"
-										+ c.chartType
-										+ "</td>";
-								table += "<td id='" + c.chartNumber + "'>"
-										+ c.chartNumber + "</td>";
-								table += "<td>" + c.chartTitle + "</td>";
-								table += "<td>" + c.chartScale + "</td>";
-								table += "<td style='text-align: center;'><select name='period' id='period' onchange='changeItPeriod(this)' style='width:60px;'>"
-								for (var i = 1; i <= 4; i++) {
-									if (i - 1 == period) {
-										table += '<option value="' + i*3
-												+ '" selected="selected">' + i*3
-												+ '</option>';
-									} else {
-										table += '<option value="' + i*3 + '">'
-												+ i*3 + '</option>';
-									}
-								}
-								table += "</select></td>";
-							/*	var priceList = c.chartPrices;
-								 
-								table += "<td style='display:none;' class='price3'>"+priceList[0].RRP+"</td>";
-								table += "<td style='display:none;' class='price2' >"+priceList[1].RRP+"</td>";
-								table += "<td style='display:none;' class='price1'>"+priceList[2].RRP+"</td>";
-								table += "<td class='price0'>"+priceList[3].RRP+"</td>";
-								 */
-								
-								table += "<td style='text-align: center;'><input type='checkbox' onclick='highlightChart(\"" + c.id + "\", $(this).prop(\"checked\"))'></a></td>";
-							 
-								table += "</tr>";
-							 
-						});
-		 
-		 $("#dialog").show();
-		 $("#charts").show();
-		 $("#period").show();
-		var head = ""; 
-		if(chartinfo.meta) {
-			$('#head').empty();
-			$('#head').append('当前海图库 - 文件编号：' + chartinfo.meta.MD_FileId + "，更新时间：" + chartinfo.meta.MD_DateStamp);
-		} 
-		 $("#charts").append(table);
-		if (dialogOpts1 == undefined) {
-			dialogOpts1 = {
-				title : dlginfo.title,
-				resizable : true,
-				width : 750,
-				id : dlginfo.id,
-				buttons : {
-					'生成航线' : function() {
-						xiadan();
 
-					},
-					"取消" : function() {
-						$("#dialog").dialog('close');
-						$("#charts").hide();
-					}
+	if (chartinfo == undefined)
+		chartinfo = chartlist;
+	else
+		chartlist = chartinfo;
+
+	// alert("selectType " + selectType);
+	if (selectType == 'ARCS') {
+		$('#type').find('option:eq("1")').attr('selected', 'selected');
+		$('#type').attr('disabled', 'disabled');
+		$('#head_number').show();
+	} else {
+		$('#type').attr('disabled', 'disabled');
+		$('#head_number').hide();
+	}
+	var table = "";
+	console.log(chartlist);
+	var index = 1;
+	$
+			.each(
+					chartlist.charts,
+					function(i, c) {// console.log(c.chartType);
+
+						table += "<tr>";
+						table += "<td style='text-align: center;'>" + index++
+								+ "</td>";
+						table += "<td style='text-align: center;' class='"
+								+ c.chartType + "'>" + c.chartType + "</td>";
+						table += "<td id='" + c.chartNumber + "'>"
+								+ c.chartNumber + "</td>";
+						table += "<td>" + c.chartTitle + "</td>";
+						table += "<td>" + c.chartScale + "</td>";
+
+						table += "<td style='text-align: center;'><select onchange='changeItPeriod(this)' name='period' id='period' style='width:40px;'>"
+						var priceList = c.chartPrices;
+						period = 0;
+						$("tr").eq(0).children().find(
+								'select option:eq(' + period + ')').attr(
+								'selected', 'selected');
+						$("tr").eq(0).children().find(
+								'select option:eq(' + period + ')').siblings()
+								.attr('selected', false);
+						for (var i = 0; i < priceList.length; i++) {
+							table += '<option value="'
+									+ priceList[priceList.length - 1 - i].period
+									+ '">'
+									+ priceList[priceList.length - 1 - i].period
+									+ '</option>';
+
+						}
+						table += "</select></td>";
+
+					 
+						/*	var priceList = c.chartPrices;
+							 
+							table += "<td style='display:none;' class='price3'>"+priceList[0].RRP+"</td>";
+							table += "<td style='display:none;' class='price2' >"+priceList[1].RRP+"</td>";
+							table += "<td style='display:none;' class='price1'>"+priceList[2].RRP+"</td>";
+							table += "<td class='price0'>"+priceList[3].RRP+"</td>";
+						 */
+
+						table += "<td style='text-align: center;'><input type='checkbox' onclick='highlightChart(\""
+								+ c.id
+								+ "\", $(this).prop(\"checked\"))'></a></td>";
+
+						table += "</tr>";
+
+					});
+
+	$("#dialog").show();
+	$("#charts").show();
+	$("#period").show();
+	var head = "";
+	if (chartinfo.meta) {
+		$('#head').empty();
+		$('#head').append(
+				'当前海图库 - 文件编号：' + chartinfo.meta.MD_FileId + "，更新时间："
+						+ chartinfo.meta.MD_DateStamp);
+	}
+	$("#charts").append(table);
+	if (dialogOpts1 == undefined) {
+		dialogOpts1 = {
+			title : dlginfo.title,
+			resizable : true,
+			width : 750,
+			id : dlginfo.id,
+			buttons : {
+				'生成航线' : function() {
+					xiadan();
+
+				},
+				"取消" : function() {
+					$("#dialog").dialog('close');
+					$("#charts").hide();
 				}
-			};
-		}
-		$("#dialog").dialog(dialogOpts1);
-		dialogOpts1 = undefined;
+			}
+		};
+	}
+	$("#dialog").dialog(dialogOpts1);
+	dialogOpts1 = undefined;
 
-		$("#" + dlginfo.id + "_tb").fixedHeaderTable({
-			footer : false,
-			altClass : 'odd',
-		});
+	$("#" + dlginfo.id + "_tb").fixedHeaderTable({
+		footer : false,
+		altClass : 'odd',
+	});
 
-		
 }
-
 
 //当修改某一个特定的图的周期时触发价格修改
 function changeItPeriod(a) {
@@ -134,13 +142,12 @@ function changeItPeriod(a) {
 	for (var j = 0; j < 4; j++) {
 		if (j == itPeriod) {
 			$(a).parent().parent().find('.price' + itPeriod).show();
-			$(a).parent().parent().find('.price' + itPeriod).attr("style","");
+			$(a).parent().parent().find('.price' + itPeriod).attr("style", "");
 		} else
 			$(a).parent().parent().find('.price' + j).hide();
 	}
 
 }
-
 
 function xiadan() {
 	$("#dialog").dialog('close');
@@ -161,7 +168,7 @@ function xiadan() {
 	$("#ask").dialog(dialogOpts);
 	// console.log(data);
 }
- 
+
 function confirmToBuy(linename) {
 	console.log(j2s(iroute));
 	// alert(info);
@@ -178,18 +185,18 @@ function confirmToBuy(linename) {
 		var chartNumber = $('tr').eq(i).children().eq(2).html();
 		var title = $('tr').eq(i).children().eq(3).html();
 		var bili = $('tr').eq(i).children().eq(4).html();
-	/*	var price = '';
+		/*	var price = '';
 
-		for (var j = 0; j < 4; j++) {
-			var priceItem = $('tr').eq(i).find(".price" + j);
-			if (priceItem.attr('style') == "") {
-				price = priceItem.html();
-			}
-		}*/
+			for (var j = 0; j < 4; j++) {
+				var priceItem = $('tr').eq(i).find(".price" + j);
+				if (priceItem.attr('style') == "") {
+					price = priceItem.html();
+				}
+			}*/
 		data += '{"chartNo":"' + chartNumber + '","chartNameCn":"' + title
-		+ '","chartType":"' + type + '","rateRuler":"' + bili
-		+ '","versionUnit":"' + "" + '","version":"' + ""
-		+ '","period":"' + period   + '"},';
+				+ '","chartType":"' + type + '","rateRuler":"' + bili
+				+ '","versionUnit":"' + "" + '","version":"' + ""
+				+ '","period":"' + period + '"},';
 	}
 
 	data = data.substring(0, data.length - 1);
@@ -199,7 +206,7 @@ function confirmToBuy(linename) {
 	$.ajax({
 		url : '../CommitData',
 		type : 'post',
-	 
+
 		data : {
 			'data' : data,
 			'linename' : linename,
@@ -209,7 +216,7 @@ function confirmToBuy(linename) {
 		},
 		success : function(map) {
 			var tmp = JSON.parse(map);
-			if(tmp['state']){
+			if (tmp['state']) {
 				alert('提交成功！');
 			}
 
@@ -228,19 +235,17 @@ function getLineByOrderNumber(ordernumber) {
 		url : '/SeaCharts/ShowLine',
 		type : 'post',
 		dataType : 'json',
-		data : { 
+		data : {
 			'ordernumber' : ordernumber
 		},
 		success : function(map) {
 			console.log(map);
 			// 既然是根据订单来回显航线 最多也只是一次循环而已
-		 
-				var line = map.coords;
-				console.log(line.coords);
-				 
+
+			var line = map.coords;
+			console.log(line.coords);
+
 		}
-		
+
 	})
 }
-
-

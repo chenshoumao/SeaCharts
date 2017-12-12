@@ -1,0 +1,9 @@
+{
+	 
+	"prefix" : "http://",
+ 
+	"ip"     : "",
+	 
+	"port"   : "8080",
+ 	"suffix" : "//data/createOrder/orderSeachartVo"
+}

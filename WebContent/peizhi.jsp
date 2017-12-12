@@ -8,11 +8,21 @@
 <script src="gis/js/jquery.js"></script>
 <script type="text/javascript">
 	$(function(){
+		
+		$.ajax({
+			 url:'InterfaceServlet',
+			 type:'get',
+			  
+			 success:function(data){
+				 $('#ip').val(data);
+			 }
+		 });
+		 
 		$('#submit').click(function(){
 			 $.ajax({
 				 url:'InterfaceServlet',
 				 type:'post',
-				 data:{'url':$('#url').val()},
+				 data:{'ip':$('#ip').val()},
 				 success:function(state){
 					 if(state) 
 						 alert("配置接口路径成功！");
@@ -31,7 +41,7 @@
 	<div style="text-align: center;margin-top: 100px;">
 		 
 			<label>接口路径: </label>
-			<input name="url" id="url" style="width:320px;"> 
+			<input name="ip" id="ip" style="width:320px;"> 
 			<button  style="marging-left: -150px;" id="submit">提交</button>
 		 
 	</div>
